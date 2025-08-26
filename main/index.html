@@ -1,114 +1,428 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Уманська дитяча школа мистецтв "Антарес"</title>
-    <link rel="stylesheet" href="main.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Уманська дитяча школа мистецтв «Антарес» — Bootstrap</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root { --accent:#4AAFF7; --aqua:#dfffff; --ink:#111; }
+    body{ font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:#f0f8ff; }
+    .nav-blur{ backdrop-filter: blur(6px); background:linear-gradient(90deg,rgba(0,65,130,.35),rgba(180,186,190,.35)); }
+    .brand-sub{ font-size:.75rem; color:#79E3F4; line-height:1; }
+
+    /* HERO */
+    .hero{ position:relative; min-height:72vh; display:grid; place-items:center; }
+    .hero::before{ content:""; position:absolute; inset:0; background:url('img/baner.jpg') center/cover no-repeat; }
+    .hero-overlay{ position:relative; z-index:1; text-align:center; padding:3rem 1rem; }
+    .hero h1{ font-family:"Montserrat Alternates",sans-serif; font-weight:800; text-shadow:0 8px 28px rgba(0,0,0,.25); color:#000; }
+    .promo-card{ background:var(--aqua); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.08); }
+
+    /* Sections */
+    section h2{ font-family:"Montserrat Alternates",sans-serif; font-weight:800; }
+    .card img{ object-fit:cover; height:160px; }
+
+    /* Gallery */
+    .gallery img{ width:100%; height:140px; object-fit:cover; border-radius:.75rem; }
+
+    /* Contacts */
+    .contact-img{ max-width:100%; border-radius:12px; }
+
+    footer{ background:var(--accent); color:#fff; }
+
+    /* MODAL — modern look */
+.modal-modern .modal-content{
+  border:0; border-radius:24px; overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.18);
+  background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.95));
+  backdrop-filter:saturate(1.15) blur(10px);
+}
+.modal-modern .modal-header{
+  background:radial-gradient(1200px 200px at 0% 0%, #4AAFF7 15%, #79E3F4 90%);
+  color:#fff; padding:18px 22px;
+}
+.modal-modern .modal-title{ font-weight:800; letter-spacing:.2px; }
+.modal-modern .modal-body{ padding:24px 22px 8px; }
+.modal-modern .modal-footer{ padding:14px 22px 22px; border-top:0; }
+
+/* Контейнер для емодзі */
+.form-icon-wrap {
+  position: relative;
+}
+
+.form-icon {
+  position: absolute;
+  left: 15px; /* Відстань від лівого краю */
+  top: 72%; /* Опускаємо емодзі трохи нижче */
+  transform: translateY(-50%); /* Центруємо по вертикалі */
+  font-size: 1.3rem; /* Розмір емодзі */
+  opacity: 1; /* Повна видимість емодзі */
+  pointer-events: none; /* Емодзі не блокує введення тексту */
+}
+
+.form-control {
+  padding-left: 50px; /* Додаємо місце для емодзі */
+}
+
+.promo-card {
+  background: var(--aqua);
+  border-radius: 16px; /* Round corners */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Illustration pane */
+.modal-illustration{
+  background:linear-gradient(180deg,#eef7ff,#f7fbff);
+  display:none;
+}
+@media (min-width: 768px){
+  .modal-illustration{ display:block; }
+}
+
+/* Better focus */
+.form-control:focus{ box-shadow:0 0 0 .25rem rgba(74,175,247,.25); }
+
+  </style>
 </head>
 <body>
-    <header>
-        <div class="header-image">
-            <img src="../img/baner.jpg" alt="Дитячі долоні з фарбами">
-            <nav>
-                <a href="#">Відгуки</a>
-                <a href="#">Фото/Відео</a>
-                <a href="#">Події</a>
-                <a href="#">Про нас</a>
-                <a href="#">Контакти</a>
-            </nav>
-            <h1>Уманська дитяча школа мистецтв “Антарес”</h1>
-            <div class="header-buttons">
-                <button>Ознайомчий безкоштовний урок</button>
-                <button>Записатись</button>
-            </div>
-        </div>
-    </header>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top nav-blur">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <span class="d-flex flex-column lh-1">
+          <span class="fw-bold text-light">Антарес</span>
+          <small class="brand-sub">school of mysticism</small>
+        </span>
+      </a>
 
-    <section class="about">
-        <h2>Про нашу школу</h2>
-        <div class="about-content">
-            <img src="../img/school-image.jpg" alt="Будівля школи">
-            <div class="about-text">
-                <h3>Переваги нашої школи</h3>
-                <p>
-                    Фахівці з багаторічним досвідом роботи з дітьми, індивідуальний підхід до кожного учня.
-                    Ми створюємо доброзичливе середовище для творчості.
-                </p>
-                <a href="#" class="learn-more">Дізнатись більше →</a>
-            </div>
-        </div>
-    </section>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <section class="activities">
-        <h2>Відділи</h2>
-        <p>Тут ви можете визначитись, що вас надихає</p>
-        <div class="activity-list">
-            <div class="activity">
-                <img src="../img/music1.jpg" alt="Оркестрові інструменти">
-                <h3>Відділ оркестрових інструментів</h3>
-                <a href="#">Дізнатись більше</a>
-            </div>
-            <div class="activity">
-                <img src="../img/music2.jpg" alt="Хоровий спів">
-                <h3>Відділ хорового співу</h3>
-                <a href="#">Дізнатись більше</a>
-            </div>
-            <div class="activity">
-                <img src="../img/music3.jpg" alt="Музичні інструменти">
-                <h3>Відділ музичних інструментів</h3>
-                <a href="#">Дізнатись більше</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="gallery">
-        <h2>Галерея</h2>
-        <div class="gallery-images">
-            <img src="../img/art1.jpg" alt="Дитина грає на гітарі">
-            <img src="../img/art2.jpg" alt="Малюнок птахів">
-            <img src="../img/art3.jpg" alt="Дитина грає на піаніно">
-            <img src="../img/art4.jpg" alt="Малюнки">
-            <img src="../img/art5.jpg" alt="Дитина з гітарою">
-            <img src="../img/art6.jpg" alt="Малювання крейдою">
-        </div>
-    </section>
-    
-</body>
-<section class="events">
-    <h2>Наші заходи</h2>
-    <p>Тиждень пам'яті культурної спадщини України</p>
-    <a href="#" class="learn-more">Читати більше →</a>
-    <div class="event-images">
-        <img src="../img/event1.jpg" alt="Концерт до свята Нового року">
-        <img src="../img/event2.jpg" alt="Тиждень культурної спадщини">
-        <img src="../img/event3.jpg" alt="Виставка до Дня Святого Валентина">
-        <img src="../img/event4.jpg" alt="Майстер-клас з виготовлення писанок">
-    </div>
-    <a href="#" class="view-all">Усі заходи →</a>
-</section>
-
-<section class="contacts">
-    <h2>Контакти</h2>
-    <div class="contact-info">
-        <div class="contact-image">
-            <img src="../img/contact.jpg" alt="Діти у національному вбранні">
-        </div>
-        <div class="contact-details">
-            <h3>Наші контакти</h3>
-            <p><strong>Телефон:</strong> 0681060603</p>
-            <p><strong>Адреса:</strong> м. Умань, вул. Садова 18</p>
-            <p><strong>Ел. адреса:</strong> ankaaaa1711@gmail.com</p>
-        </div>
-        <div class="social-media">
-            <h3>Ми у соціальних мережах</h3>
-            <ul>
-                <li><a href="https://www.instagram.com/uman_art_of_school/">Instagram</a></li>
-                <li><a href="https://www.facebook.com/p/Уманська-дитяча-школа-мистецтв-Антарес-100063672123098/?locale=ru_RU">Facebook</a></li>
-                <li><a href="https://www.youtube.com/@udshm_ANTARES">YouTube</a></li>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Відділи</a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#departments">Музичні</a></li>
+              <li><a class="dropdown-item" href="#departments">Художні</a></li>
             </ul>
-        </div>
+          </li>
+          <li class="nav-item"><a class="nav-link text-light fw-semibold" href="#gallery">Фото/Відео</a></li>
+          <li class="nav-item"><a class="nav-link text-light fw-semibold" href="#events">Події</a></li>
+          <li class="nav-item"><a class="nav-link text-light fw-semibold" href="#about">Про нас</a></li>
+          <li class="nav-item"><a class="nav-link text-light fw-semibold" href="#contacts">Контакти</a></li>
+        </ul>
+      </div>
     </div>
-</section>
+  </nav>
 
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-overlay container">
+      <h1 class="display-5 display-md-3 mb-4">Уманська дитяча школа мистецтв «Антарес»</h1>
+      <div class="promo-card mx-auto p-3 p-md-4 d-inline-flex flex-column flex-md-row align-items-center gap-3" style="max-width:720px;">
+        <span class="fw-bold">Ознайомчий безкоштовний урок</span>
+        <button class="btn btn-dark px-4 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#requestModal">Записатись</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" class="py-5 position-relative" style="background: linear-gradient(180deg,#f7fbff 0,#eef6ff 100%);">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="mt-3 mb-0">Про нашу школу</h2>
+      </div>
+
+      <div class="row g-4 align-items-center">
+        <!-- Image -->
+        <div class="col-lg-5">
+          <div class="rounded-4 overflow-hidden shadow-lg bg-white">
+            <img src="img/school-image.jpg" alt="Будівля школи" class="w-100 object-fit-cover" style="aspect-ratio: 4/3;">
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="col-lg-7">
+          <div class="p-4 p-md-5 bg-white rounded-4 shadow-sm">
+            <h3 class="h4 fw-bold mb-3">Переваги нашої школи</h3>
+            <p class="lead text-secondary mb-4">
+              Фахівці з багаторічним досвідом роботи з дітьми, індивідуальний підхід до кожного учня.
+              Ми створюємо доброзичливе середовище для творчості.
+            </p>
+
+            <div class="row g-3 mb-4">
+              <div class="col-sm-6">
+                <div class="d-flex align-items-start gap-3">
+                  <div class="fs-4">✅</div>
+                  <div>
+                    <div class="fw-semibold">Індивідуальні програми</div>
+                    <div class="text-muted small">під рівень та інтереси дитини</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="d-flex align-items-start gap-3">
+                  <div class="fs-4">✅</div>
+                  <div>
+                    <div class="fw-semibold">Досвідчені педагоги</div>
+                    <div class="text-muted small">ласкава дисципліна та підтримка</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="d-flex align-items-start gap-3">
+                  <div class="fs-4">✅</div>
+                  <div>
+                    <div class="fw-semibold">Сучасні кабінети</div>
+                    <div class="text-muted small">інструменти та матеріали</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="d-flex align-items-start gap-3">
+                  <div class="fs-4">✅</div>
+                  <div>
+                    <div class="fw-semibold">Концерти та виставки</div>
+                    <div class="text-muted small">регулярні публічні виступи</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-3">
+              <a href="#" class="btn btn-primary px-4">Дізнатись більше</a>
+              <button class="btn btn-outline-dark px-4" data-bs-toggle="modal" data-bs-target="#requestModal">Записатись на урок</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPARTMENTS -->
+  <section id="departments" class="py-5 bg-white">
+    <div class="container">
+      <h2 class="text-center mb-2">Відділи</h2>
+      <p class="text-center text-muted mb-4">Тут ви можете визначитись, що вас надихає</p>
+      <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <img src="img/music1.jpg" class="card-img-top" alt="Оркестрові інструменти">
+            <div class="card-body d-flex flex-column">
+              <h3 class="h6 fw-bold">Відділ оркестрових інструментів</h3>
+              <div class="mt-auto"><a href="#" class="btn btn-primary w-100">Дізнатись більше</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <img src="img/music2.jpg" class="card-img-top" alt="Хоровий спів">
+            <div class="card-body d-flex flex-column">
+              <h3 class="h6 fw-bold">Відділ хорового співу</h3>
+              <div class="mt-auto"><a href="#" class="btn btn-primary w-100">Дізнатись більше</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <img src="img/music3.jpg" class="card-img-top" alt="Музичні інструменти">
+            <div class="card-body d-flex flex-column">
+              <h3 class="h6 fw-bold">Відділ музичних інструментів</h3>
+              <div class="mt-auto"><a href="#" class="btn btn-primary w-100">Дізнатись більше</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4">Галерея</h2>
+      <div class="row g-3 gallery">
+        <div class="col-6 col-md-4 col-lg-2"><img src="img/art1.jpg" class="w-100" alt="Дитина грає на гітарі"></div>
+        <div class="col-6 col-md-4 col-lg-2"><img src="img/art2.jpg" class="w-100" alt="Малюнок птахів"></div>
+        <div class="col-6 col-md-4 col-lg-2"><img src="img/art3.jpg" class="w-100" alt="Дитина грає на піаніно"></div>
+        <div class="col-6 col-md-4 col-lg-2"><img src="img/art4.jpg" class="w-100" alt="Малюнки"></div>
+        <div class="col-6 col-md-4 col-lg-2"><img src="img/art5.jpg" class="w-100" alt="Дитина з гітарою"></div>
+        <div class="col-6 col-md-4 col-lg-2"><img src="img/art6.jpg" class="w-100" alt="Малювання крейдою"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="events" class="py-5 bg-white">
+    <div class="container">
+      <h2 class="text-center mb-3">Наші заходи</h2>
+      <p class="text-center text-muted">Тиждень пам'яті культурної спадщини України</p>
+      <div class="text-center mb-4">
+        <a href="#" class="link-primary fw-semibold">Читати більше →</a>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-6 col-lg-3"><img class="w-100 rounded-3" src="img/event1.jpg" alt="Концерт до свята Нового року"></div>
+        <div class="col-6 col-lg-3"><img class="w-100 rounded-3" src="img/event2.jpg" alt="Тиждень культурної спадщини"></div>
+        <div class="col-6 col-lg-3"><img class="w-100 rounded-3" src="img/event3.jpg" alt="Виставка до Дня Святого Валентина"></div>
+        <div class="col-6 col-lg-3"><img class="w-100 rounded-3" src="img/event4.jpg" alt="Майстер-клас з виготовлення писанок"></div>
+      </div>
+
+      <div class="text-center mt-3">
+        <a href="#" class="btn btn-outline-primary">Усі заходи →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTS -->
+  <section id="contacts" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4">Контакти</h2>
+      <div class="row g-4 align-items-stretch">
+        <div class="col-md-5">
+          <img src="img/contact.jpg" alt="Діти у національному вбранні" class="contact-img shadow-sm">
+        </div>
+        <div class="col-md-7">
+          <div class="row g-4 h-100">
+            <div class="col-sm-6">
+              <div class="h-100 p-4 bg-white rounded-3 shadow-sm">
+                <h3 class="h6 fw-bold">Наші контакти</h3>
+                <p class="mb-1"><strong>Телефон:</strong> <a class="link-dark text-decoration-none" href="tel:0681060603">068&nbsp;106&nbsp;06&nbsp;03</a></p>
+                <p class="mb-1"><strong>Адреса:</strong> м. Умань, вул. Садова 18</p>
+                <p class="mb-0"><strong>Ел. адреса:</strong> <a class="link-dark text-decoration-none" href="mailto:ankaaaa1711@gmail.com">ankaaaa1711@gmail.com</a></p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="h-100 p-4 bg-white rounded-3 shadow-sm">
+                <h3 class="h6 fw-bold">Ми у соціальних мережах</h3>
+                <ul class="list-unstyled mb-0">
+                  <li class="mb-2"><a class="link-primary" href="https://www.instagram.com/uman_art_of_school/" target="_blank" rel="noopener">Instagram</a></li>
+                  <li class="mb-2"><a class="link-primary" href="https://www.facebook.com/p/Уманська-дитяча-школа-мистецтв-Антарес-100063672123098/?locale=ru_RU" target="_blank" rel="noopener">Facebook</a></li>
+                  <li><a class="link-primary" href="https://www.youtube.com/@udshm_ANTARES" target="_blank" rel="noopener">YouTube</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-3 text-center">
+    <div class="container small">© <span id="y"></span> Антарес</div>
+  </footer>
+
+  <!-- REQUEST MODAL -->
+  <div class="modal fade" id="requestModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-modern">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Заповніть заявку</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрити"></button>
+        </div>
+  
+        <div class="modal-body">
+          <div class="row g-0">
+            <!-- Illustration / USP -->
+            <div class="col-md-5 modal-illustration p-4">
+              <h6 class="fw-bold mb-2">Безкоштовний ознайомчий урок</h6>
+              <p class="small text-secondary mb-4">
+                Менеджер зателефонує для уточнення деталей. Середній час відповіді — до 1 роб. дня.
+              </p>
+              <img src="img/art5.jpg" alt="Дитяча творчість" class="w-100 rounded-3 shadow-sm object-fit-cover" style="aspect-ratio:4/3;">
+            </div>
+  
+            <!-- Form -->
+            <div class="col-md-7 p-3 p-md-4">
+              <form id="requestForm" class="needs-validation" novalidate>
+                <div class="mb-3 form-icon-wrap">
+                  <span class="form-icon">👤</span>
+                  <label class="form-label">Ім'я та Прізвище</label>
+                  <input type="text" class="form-control" autocomplete="name" required>
+                </div>
+                
+                <!-- Приклад для поля "Телефон" -->
+                <div class="mb-3 form-icon-wrap">
+                  <span class="form-icon">📞</span>
+                  <label class="form-label">Телефон</label>
+                  <input type="tel" class="form-control" placeholder="+38 (0XX) XXX-XX-XX" inputmode="tel" pattern="^\+?38\s?\(0\d{2}\)\s?\d{3}-\d{2}-\d{2}$" required>
+                </div>
+                
+                <!-- Приклад для поля "Вік вашої дитини" -->
+                <div class="mb-3 form-icon-wrap">
+                  <span class="form-icon">🎂</span>
+                  <label class="form-label">Вік вашої дитини</label>
+                  <input type="number" class="form-control" min="3" max="18" step="1" required>
+                  <div class="invalid-feedback">Вкажіть вік від 3 до 18</div>
+                </div>
+  
+                <div class="modal-footer px-0">
+                  <button type="button" class="btn btn-outline-secondary w-100 w-md-auto" data-bs-dismiss="modal">Скасувати</button>
+                  <button type="submit" class="btn btn-primary w-100 w-md-auto">Відправити</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+  <!-- THANKS MODAL -->
+  <div class="modal fade" id="thanksModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Дякуємо, вашу заявку відправлено на обробку</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0 text-muted">Найближчим часом вам зателефонує наш менеджер для уточнення інформації</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Поточний рік у футері
+    (document.getElementById('y') || {}).textContent = new Date().getFullYear();
+
+    // Валідація + логіка форм, показ подяки
+    (function(){
+      const form = document.getElementById('requestForm');
+      const requestModalEl = document.getElementById('requestModal');
+      const thanksModalEl = document.getElementById('thanksModal');
+      if(!form || !requestModalEl || !thanksModalEl) return;
+
+      const requestModal = bootstrap.Modal.getOrCreateInstance(requestModalEl);
+      const thanksModal = bootstrap.Modal.getOrCreateInstance(thanksModalEl);
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if(!form.checkValidity()){
+          form.classList.add('was-validated');
+          return;
+        }
+        requestModal.hide();
+        setTimeout(()=> thanksModal.show(), 200);
+        form.reset();
+        form.classList.remove('was-validated');
+      });
+    })();
+  </script>
+</body>
 </html>
