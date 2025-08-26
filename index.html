@@ -78,6 +78,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
+
 /* Illustration pane */
 .modal-illustration{
   background:linear-gradient(180deg,#eef7ff,#f7fbff);
@@ -89,6 +90,49 @@
 
 /* Better focus */
 .form-control:focus{ box-shadow:0 0 0 .25rem rgba(74,175,247,.25); }
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  border-radius: 12px; /* Rounded corners */
+  overflow: hidden; /* Ensures the content stays inside the card */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  background-color: #ffffff; /* Card background */
+}
+
+.card:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333; /* Darker text for better readability */
+  margin-bottom: 1rem;
+}
+
+.card .btn {
+  background-color: #4AAFF7; /* Blue color */
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 10px; /* Rounded buttons */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.card .btn:hover {
+  background-color: #3791d8; /* Slightly darker blue on hover */
+  transform: scale(1.05); /* Slight scale-up effect on button hover */
+}
+
+.card .btn:focus {
+  box-shadow: 0 0 0 3px rgba(74, 175, 247, 0.5); /* Focus effect */
+}
+
 
   </style>
 </head>
