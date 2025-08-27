@@ -132,6 +132,57 @@
 .card .btn:focus {
   box-shadow: 0 0 0 3px rgba(74, 175, 247, 0.5); /* Focus effect */
 }
+/* Оновлений стиль для кнопки "Записатись" та "Дізнатись більше" */
+.btn-record {
+  background-color: #4AAFF7; /* Blue color */
+  color: white;
+  font-weight: 1000;
+  padding: 15px 30px; /* Increase padding for a larger button */
+  border-radius: 10px;
+  border: none; /* Remove the black border */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-record:hover {
+  background-color: #3791d8; /* Darker blue on hover */
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+
+/* Оновлений стиль для кнопки "Дізнатись більше" */
+.btn-info {
+  background-color: #4AAFF7; /* Блакитний колір */
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+.btn-info:hover {
+  background-color: #3791d8; /* Темніший блакитний при наведенні */
+  transform: scale(1.05);
+  color: #ebeff3; /* Сірий колір тексту при наведенні */
+}
+
+/* Оновлений стиль для кнопки "Записатись на урок" */
+.btn-signup {
+  background-color: transparent; /* Прозорий фон */
+  color: #4AAFF7; /* Початковий блакитний колір тексту */
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border: 2px solid #4AAFF7; /* Початкова блакитна обводка */
+}
+
+.btn-signup:hover {
+  background-color: #ffc107; /* Жовтий фон при наведенні */
+  color: #212529; /* Темний колір тексту при наведенні */
+  transform: scale(1.05);
+  border-color: #ffc107; /* Жовта обводка при наведенні */
+}
+
 
 
   </style>
@@ -175,7 +226,7 @@
       <h1 class="display-5 display-md-3 mb-4">Уманська дитяча школа мистецтв «Антарес»</h1>
       <div class="promo-card mx-auto p-3 p-md-4 d-inline-flex flex-column flex-md-row align-items-center gap-3" style="max-width:720px;">
         <span class="fw-bold">Ознайомчий безкоштовний урок</span>
-        <button class="btn btn-dark px-4 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#requestModal">Записатись</button>
+        <button class="btn btn-dark btn-record px-4 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#requestModal">Записатись</button>
       </div>
     </div>
   </header>
@@ -243,9 +294,9 @@
               </div>
             </div>
 
-            <div class="d-flex flex-wrap gap-3">
-              <a href="#" class="btn btn-primary px-4">Дізнатись більше</a>
-              <button class="btn btn-outline-dark px-4" data-bs-toggle="modal" data-bs-target="#requestModal">Записатись на урок</button>
+            <div class="d-flex flex-wrap gap-3">   
+              <a href="#" class="btn btn-primary btn-info px-4">Дізнатись більше</a>
+              <button type="button" class="btn btn-outline-dark btn-signup px-4 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#requestModal">Записатись на урок</button>
             </div>
           </div>
         </div>
@@ -362,7 +413,7 @@
   </section>
 
   <footer class="py-3 text-center">
-    <div class="container small">© <span id="y"></span> Антарес</div>
+    <div class="container small">© <span id="y"></span> Всі данні захищенні</div>
   </footer>
 
   <!-- REQUEST MODAL -->
