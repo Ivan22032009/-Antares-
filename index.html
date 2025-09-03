@@ -182,12 +182,80 @@
   transform: scale(1.05);
   border-color: #ffc107; /* Жовта обводка при наведенні */
 }
+/* --- Preloader --- */
+body.preload-lock { overflow: hidden; }
 
+#preloader{
+  position: fixed;
+  inset: 0;
+  background: #fff;              /* білий фон */
+  display: grid;
+  place-items: center;            /* центр логотипа */
+  z-index: 20000;                 /* вище за Bootstrap модалі (1055+) */
+  transition: opacity .35s ease, visibility .35s ease;
+}
 
+#preloader img{
+  max-width: 180px;               /* розмір лого */
+  width: 32vw;
+  height: auto;
+}
+
+/* коли ховаємо */
+#preloader.hide{
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+#preloader img {
+  max-width: 180px;
+  width: 32vw;
+  height: auto;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2); /* збільшення */
+  }
+}
+.btn-custom {
+  background-color: #4AAFF7; /* блакитний (можна свій код) */
+  border-color: #4AAFF7;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-custom:hover {
+  background-color: #3791d8;
+  border-color: #3791d8;
+  color: #dadee3;
+}
+.btn-custom, .btn-primary {
+  transition: transform 0.3s ease; /* плавність */
+  
+}
+
+.btn-custom:hover, .btn-primary:hover {
+  transform: scale(1.05); /* трішки збільшити */
+}
+
+.card img {
+  height: 220px;
+  object-fit: cover;
+}
 
   </style>
 </head>
 <body>
+  <!-- PRELOADER -->
+<div id="preloader" aria-hidden="true">
+  <!-- Постав свій шлях до лого: svg/png -->
+  <img src="img/logo.jpg" alt="Лого" />
+</div>
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg fixed-top nav-blur">
     <div class="container">
@@ -213,8 +281,8 @@
           </li>
           <li class="nav-item"><a class="nav-link text-light fw-semibold" href="#about">Про нас</a></li>
           <li class="nav-item"><a class="nav-link text-light fw-semibold" href="#gallery">Фото/Відео</a></li>
-          <li class="nav-item"><a class="nav-link text-light fw-semibold" href="#events">Події</a></li>
           <a class="nav-link text-light fw-semibold" href="#transparency">Прозорість і відкритість</a>
+          <li class="nav-item"><a class="nav-link text-light fw-semibold" href="#events">Події</a></li>   
           <li class="nav-item"><a class="nav-link text-light fw-semibold" href="#contacts">Контакти</a></li>
           
         </ul>
@@ -228,7 +296,12 @@
       <h1 class="display-5 display-md-3 mb-4">Уманська дитяча школа мистецтв «Антарес»</h1>
       <div class="promo-card mx-auto p-3 p-md-4 d-inline-flex flex-column flex-md-row align-items-center gap-3" style="max-width:720px;">
         <span class="fw-bold">Ознайомчий безкоштовний урок</span>
-        <button class="btn btn-dark btn-record px-4 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#requestModal">Записатись</button>
+        <a href="https://forms.gle/ВАШ_ЛІНК" target="_blank" class="btn btn-custom btn-lg" style="text-decoration: none;">
+          Записатись
+        </a>
+        
+        
+        
       </div>
     </div>
   </header>
@@ -463,79 +536,6 @@
   <footer class="py-3 text-center">
     <div class="container small">© <span id="y"></span> Всі данні захищенні</div>
   </footer>
-
-  <!-- REQUEST MODAL -->
-  <div class="modal fade" id="requestModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg modal-modern">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Заповніть заявку</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрити"></button>
-        </div>
-  
-        <div class="modal-body">
-          <div class="row g-0">
-            <!-- Illustration / USP -->
-            <div class="col-md-5 modal-illustration p-4">
-              <h6 class="fw-bold mb-2">Безкоштовний ознайомчий урок</h6>
-              <p class="small text-secondary mb-4">
-                Менеджер зателефонує для уточнення деталей. Середній час відповіді — до 1 роб. дня.
-              </p>
-              <img src="img/art5.jpg" alt="Дитяча творчість" class="w-100 rounded-3 shadow-sm object-fit-cover" style="aspect-ratio:4/3;">
-            </div>
-  
-            <!-- Form -->
-            <div class="col-md-7 p-3 p-md-4">
-              <form id="requestForm" class="needs-validation" novalidate>
-                <div class="mb-3 form-icon-wrap">
-                  <span class="form-icon">👤</span>
-                  <label class="form-label">Ім'я та Прізвище</label>
-                  <input type="text" class="form-control" autocomplete="name" required>
-                </div>
-                
-                <!-- Приклад для поля "Телефон" -->
-                <div class="mb-3 form-icon-wrap">
-                  <span class="form-icon">📞</span>
-                  <label class="form-label">Телефон</label>
-                  <input type="tel" class="form-control" placeholder="+38 (0XX) XXX-XX-XX" inputmode="tel" pattern="^\+?38\s?\(0\d{2}\)\s?\d{3}-\d{2}-\d{2}$" required>
-                </div>
-                
-                <!-- Приклад для поля "Вік вашої дитини" -->
-                <div class="mb-3 form-icon-wrap">
-                  <span class="form-icon">🎂</span>
-                  <label class="form-label">Вік вашої дитини</label>
-                  <input type="number" class="form-control" min="3" max="18" step="1" required>
-                  <div class="invalid-feedback">Вкажіть вік від 3 до 18</div>
-                </div>
-  
-                <div class="modal-footer px-0">
-                  <button type="button" class="btn btn-outline-secondary w-100 w-md-auto" data-bs-dismiss="modal">Скасувати</button>
-                  <button type="submit" class="btn btn-primary w-100 w-md-auto">Відправити</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-  
-      </div>
-    </div>
-  </div>
-  
-  <!-- THANKS MODAL -->
-  <div class="modal fade" id="thanksModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Дякуємо, вашу заявку відправлено на обробку</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p class="mb-0 text-muted">Найближчим часом вам зателефонує наш менеджер для уточнення інформації</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Tuition Modal -->
 <!-- Tuition Modal -->
 <div class="modal fade" id="tuitionModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered modal-modern">
@@ -706,6 +706,35 @@
         form.classList.remove('was-validated');
       });
     })();
+
+  // Блокуємо скрол поки вантажиться
+  document.documentElement.setAttribute('data-preloading', 'true');
+  document.body.classList.add('preload-lock');
+
+  window.addEventListener('load', function(){
+    const pre = document.getElementById('preloader');
+    if(pre){
+      // чекаємо 5 секунд після завантаження
+      setTimeout(() => {
+        pre.classList.add('hide');                    
+        setTimeout(()=> pre.remove(), 400);           
+        document.body.classList.remove('preload-lock');
+        document.documentElement.removeAttribute('data-preloading');
+      }, 3000); // ← затримка 3 секунд
+    }
+  });
+
+  // Fallback (10с після load + 5с запасу)
+  setTimeout(() => {
+    const pre = document.getElementById('preloader');
+    if(pre && !pre.classList.contains('hide')){
+      pre.classList.add('hide');
+      setTimeout(()=> pre.remove(), 400);
+      document.body.classList.remove('preload-lock');
+      document.documentElement.removeAttribute('data-preloading');
+    }
+  }, 15000);
+
   </script>
 </body>
 </html>
