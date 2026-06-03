@@ -44,9 +44,9 @@ services:
       context: ./Frontend
       dockerfile: ../Dockerfile.frontend
     ports:
-      - "5173:5173"
+      - "3000:3000"
     environment:
-      - VITE_API_URL=http://backend:5002/api
+      - VITE_API_URL=http://localhost:5002/api
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
@@ -54,7 +54,7 @@ services:
     volumes:
       - ./Frontend:/app
       - /app/node_modules
-    command: npm run dev
+    command: npm run dev -- --host
 
 volumes:
   db_data:
