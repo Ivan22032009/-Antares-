@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "watch": "tsc --watch",
     "setup-db": "node setup-db.cjs",
@@ -34,6 +34,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.10.6",
+    "ts-node-dev": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^6.17.0",
     "@typescript-eslint/parser": "^6.17.0",
     "eslint": "^8.56.0",
