@@ -1,0 +1,17 @@
+# Frontend Dockerfile
+FROM node:18
+
+WORKDIR /app
+
+COPY Frontend/package*.json ./
+RUN npm install
+
+COPY Frontend/ ./
+
+# Build the app
+RUN npm run build
+
+EXPOSE 3000
+
+# Serve the built app using vite preview on port 3000
+CMD ["npm", "run", "preview", "--", "--port", "3000", "--host"]

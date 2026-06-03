@@ -1,10 +1,9 @@
 import React from 'react';
 import { editorConfig, ACTIVE_EDITOR } from '../../config/editors';
+import { Editor } from '@tinymce/tinymce-react';
 
 // Компонент TinyMCE
 const TinyMCEditor = ({ value, onChange, onInit }) => {
-  const { Editor } = require('@tinymce/tinymce-react');
-  
   return (
     <Editor
       apiKey={editorConfig.tinymce.apiKey}

@@ -66,7 +66,7 @@ const EditableElement = ({
                 const formData = new FormData();
                 formData.append('image', blobInfo.blob(), blobInfo.filename());
                 
-                fetch('http://localhost:5000/api/upload', {
+                fetch('http://localhost:5001/api/upload', {
                   method: 'POST',
                   body: formData
                 })

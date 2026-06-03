@@ -23,8 +23,8 @@ export const editorConfig = {
           
           const currentHost = window.location.hostname;
           const uploadURL = currentHost === '192.168.0.224' 
-            ? 'http://192.168.0.224:5000/api/upload'
-            : 'http://localhost:5000/api/upload';
+            ? 'http://192.168.0.224:5001/api/upload'
+            : 'http://localhost:5001/api/upload';
           
           fetch(uploadURL, {
             method: 'POST',

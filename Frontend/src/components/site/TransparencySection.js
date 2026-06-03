@@ -12,7 +12,7 @@ useEffect(() => {
 
 const loadTransparencySections = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/transparency');
+    const response = await fetch('http://localhost:5001/api/transparency');
     const data = await response.json();
     console.log('✅ Transparency data:', data);
     if (Array.isArray(data)) {

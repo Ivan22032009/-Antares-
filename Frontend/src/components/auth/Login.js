@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/authService';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Login = () => {
 
     try {
       // Відправляємо навіть порожні значення
-      await authService.login(email || '', password || '');
+      await authService.login(login || '', password || '');
 
       // 🔥 Оновлюємо статус авторизації у всьому застосунку
       window.dispatchEvent(new Event('authChange'));
@@ -47,19 +47,19 @@ const Login = () => {
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem' }}>
-            Email:
+            Логін або Email:
           </label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
             style={{
               width: '100%',
               padding: '0.5rem',
               border: '1px solid #ccc',
               borderRadius: '4px',
             }}
-            placeholder="Введіть email"
+            placeholder="Введіть логін або email"
           />
         </div>
 

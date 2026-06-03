@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const DEFAULT_API = import.meta.env.VITE_API_URL || 'http://localhost:5002/api';
+
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // або 'http://192.168.0.224:5000/api'
+  baseURL: DEFAULT_API,
   timeout: 10000,
 });
 

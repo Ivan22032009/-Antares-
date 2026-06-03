@@ -7,13 +7,13 @@ class AuthService {
     this.user = JSON.parse(localStorage.getItem('user') || 'null');
   }
 
-  async login(email, password) {
+  async login(identifier, password) {
     try {
-      console.log('🔄 Attempting login with:', { email, password });
+      console.log('🔄 Attempting login with:', { identifier, password });
       
       // Відправляємо пароль у відкритому вигляді - бекенд сам його хешує
       const response = await api.post('/auth/login', {
-        email: email,
+        email: identifier,
         password: password // відправляємо оригінальний пароль, не хеш
       });
 

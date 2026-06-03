@@ -14,7 +14,7 @@ const ImageUploader = ({ onInsert, onClose }) => {
 
   const loadExistingImages = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/upload');
+      const response = await fetch('http://localhost:5001/api/upload');
       if (response.ok) {
         const data = await response.json();
         if (Array.isArray(data)) {
@@ -58,7 +58,7 @@ const ImageUploader = ({ onInsert, onClose }) => {
       const formData = new FormData();
       formData.append('image', selectedFile);
 
-      const response = await fetch('http://localhost:5000/api/upload', {
+      const response = await fetch('http://localhost:5001/api/upload', {
         method: 'POST',
         body: formData
       });
