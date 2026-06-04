@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import Editor from './components/editor/Editor';
@@ -97,11 +97,11 @@ const AdminLayout = () => {
           </div>
           <div className="admin-brand">ANTARES</div>
           <nav className="admin-nav">
-            <a href="/admin/dashboard">Dashboard</a>
-            <a href="/admin/news">Новини</a>
-            <a href="/admin/gallery-management">Галерея</a>
-            <a href="/admin/transparency">Прозорість</a>
-            <a href="/admin/users">Користувачі</a>
+            <Link to="/admin/dashboard">Dashboard</Link>
+            <Link to="/admin/news">Новини</Link>
+            <Link to="/admin/gallery-management">Галерея</Link>
+            <Link to="/admin/transparency">Прозорість</Link>
+            <Link to="/admin/users">Користувачі</Link>
             <a href="/site/home" target="_blank" rel="noreferrer">Перегляд сайту</a>
           </nav>
         </aside>
