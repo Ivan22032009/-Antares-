@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, NavLink } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import Editor from './components/editor/Editor';
@@ -97,12 +97,24 @@ const AdminLayout = () => {
           </div>
           <div className="admin-brand">ANTARES</div>
           <nav className="admin-nav">
-            <Link to="/admin/dashboard">Dashboard</Link>
-            <Link to="/admin/news">Новини</Link>
-            <Link to="/admin/gallery-management">Галерея</Link>
-            <Link to="/admin/transparency">Прозорість</Link>
-            <Link to="/admin/users">Користувачі</Link>
-            <a href="/site/home" target="_blank" rel="noreferrer">Перегляд сайту</a>
+            <NavLink to="/admin/dashboard" className={({isActive}) => 'nav-item' + (isActive? ' active' : '')}>
+              <span className="nav-icon">🏠</span><span className="nav-label">Dashboard</span>
+            </NavLink>
+            <NavLink to="/admin/news" className={({isActive}) => 'nav-item' + (isActive? ' active' : '')}>
+              <span className="nav-icon">📰</span><span className="nav-label">Новини</span>
+            </NavLink>
+            <NavLink to="/admin/gallery-management" className={({isActive}) => 'nav-item' + (isActive? ' active' : '')}>
+              <span className="nav-icon">🖼️</span><span className="nav-label">Галерея</span>
+            </NavLink>
+            <NavLink to="/admin/transparency" className={({isActive}) => 'nav-item' + (isActive? ' active' : '')}>
+              <span className="nav-icon">📂</span><span className="nav-label">Прозорість</span>
+            </NavLink>
+            <NavLink to="/admin/users" className={({isActive}) => 'nav-item' + (isActive? ' active' : '')}>
+              <span className="nav-icon">👥</span><span className="nav-label">Користувачі</span>
+            </NavLink>
+            <a href="/site/home" target="_blank" rel="noreferrer" className="nav-item external">
+              <span className="nav-icon">👁️</span><span className="nav-label">Перегляд сайту</span>
+            </a>
           </nav>
         </aside>
 
