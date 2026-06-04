@@ -62,6 +62,7 @@ class AuthService {
     localStorage.removeItem('user');
     delete api.defaults.headers.common['Authorization'];
     console.log('✅ User logged out');
+    window.dispatchEvent(new Event('authChange'));
   }
 
   isAuthenticated() {
