@@ -145,7 +145,6 @@ const GalleryManagement = () => {
     <div className="gallery-management">
       <div className="gallery-header">
         <div className="header-top">
-          <h1>Керування галереєю</h1>
           <Link to="/site/gallery" target="_blank" className="view-site-btn">
             👁️ Перегляд на сайті
           </Link>
