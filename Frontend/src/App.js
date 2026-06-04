@@ -9,6 +9,8 @@ import NewsManagement from './components/admin/NewsManagement';
 import NewsEditor from './components/admin/NewsEditor';
 import GalleryManagement from './components/admin/GalleryManagement';
 import TransparencyManagement from './components/admin/TransparencyManagement'; // Додано
+import UsersManagement from './components/admin/UsersManagement';
+import UserCreate from './components/admin/UserCreate';
 import { authService } from './services/authService';
 import './App.css';
 import './components/admin/admin.css';
@@ -78,12 +80,20 @@ const AdminLayout = () => {
 
       <div className="admin-root">
         <aside className="admin-sidebar">
+          <div className="sidebar-user">
+            <div className="user-avatar">{/* placeholder avatar */}</div>
+            <div className="user-info">
+              <div className="user-name">{authService.getUser()?.username || 'Гість'}</div>
+              <div className="user-email">{authService.getUser()?.email || ''}</div>
+            </div>
+          </div>
           <div className="admin-brand">ANTARES</div>
           <nav className="admin-nav">
             <a href="/admin/dashboard">Dashboard</a>
             <a href="/admin/news">Новини</a>
             <a href="/admin/gallery-management">Галерея</a>
             <a href="/admin/transparency">Прозорість</a>
+            <a href="/admin/users">Користувачі</a>
             <a href="/site/home" target="_blank" rel="noreferrer">Перегляд сайту</a>
           </nav>
         </aside>
@@ -106,6 +116,10 @@ const AdminLayout = () => {
 
               {/* Маршрут для управління галереєю */}
               <Route path="gallery-management" element={<GalleryManagement />} />
+
+              {/* Користувачі */}
+              <Route path="users" element={<UsersManagement />} />
+              <Route path="users/create" element={<UserCreate />} />
 
               {/* Маршрут для управління прозорістю */}
               <Route path="transparency" element={<TransparencyManagement />} />
