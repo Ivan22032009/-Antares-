@@ -62,6 +62,14 @@ useEffect(() => {
 }
 
 const AdminLayout = () => {
+  const [user, setUser] = useState(authService.getUser());
+
+  useEffect(() => {
+    const onAuth = () => setUser(authService.getUser());
+    window.addEventListener('authChange', onAuth);
+    return () => window.removeEventListener('authChange', onAuth);
+  }, []);
+
   const handleLogout = () => {
     authService.logout();
     window.location.href = '/login';
@@ -83,8 +91,8 @@ const AdminLayout = () => {
           <div className="sidebar-user">
             <div className="user-avatar">{/* placeholder avatar */}</div>
             <div className="user-info">
-              <div className="user-name">{authService.getUser()?.username || 'Гість'}</div>
-              <div className="user-email">{authService.getUser()?.email || ''}</div>
+              <div className="user-name">{user?.username || 'Гість'}</div>
+              <div className="user-email">{user?.email || ''}</div>
             </div>
           </div>
           <div className="admin-brand">ANTARES</div>
