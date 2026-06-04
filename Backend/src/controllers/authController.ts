@@ -194,3 +194,22 @@ export const verifyToken = (req: AuthRequest, res: Response): void => {
     });
   }
 };
+
+export const getUsers = (req: AuthRequest, res: Response): void => {
+  try {
+    UserModel.getAllUsers((err, users) => {
+      if (err) {
+        console.error('❌ Error fetching users:', err);
+        res.status(500).json({ success: false, message: 'Помилка бази даних' });
+        return;
+      }
+
+      // Remove password field before returning
+      const safe = (users || []).map(u => ({ id: u.id, username: u.username, email: u.email, created_at: u.created_at }));
+      res.json({ success: true, users: safe });
+    });
+  } catch (error: any) {
+    console.error('❌ getUsers unexpected error:', error);
+    res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
+  }
+};
