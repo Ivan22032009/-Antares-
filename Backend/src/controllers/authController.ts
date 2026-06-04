@@ -195,7 +195,7 @@ export const verifyToken = (req: AuthRequest, res: Response): void => {
   }
 };
 
-export const getUsers = (req: AuthRequest, res: Response): void => {
+export const getUsers = (_req: AuthRequest, res: Response): void => {
   try {
     UserModel.getAllUsers((err, users) => {
       if (err) {
