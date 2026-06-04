@@ -60,7 +60,6 @@ const SiteLayout = ({ children }) => {
                 <Link to="/site/departments">Відділи</Link>
                 <Link to="/site/about">Про нас</Link>
                 <Link to="/site/gallery">Фото/Відео</Link>
-                <Link to="/site/news">Новини</Link>
               </div>
               
               <div className="nav-center">
@@ -70,6 +69,7 @@ const SiteLayout = ({ children }) => {
               </div>
               
               <div className="nav-right">
+                <Link to="/site/news">Новини</Link>
                 <Link to="/site/transparency">Прозорість</Link>
                 {/* Прибрано "Події" */}
                 <Link to="/site/contacts">Контакти</Link>
@@ -98,7 +98,6 @@ const SiteLayout = ({ children }) => {
                 <Link to="/site/departments">Відділи</Link>
                 <Link to="/site/about">Про нас</Link>
                 <Link to="/site/gallery">Фото/Відео</Link>
-                <Link to="/site/news">Новини</Link>
               </div>
               
               <div className="nav-center">
@@ -108,6 +107,7 @@ const SiteLayout = ({ children }) => {
               </div>
               
               <div className="nav-right">
+                <Link to="/site/news">Новини</Link>
                 <Link to="/site/transparency">Прозорість</Link>
                 {/* Прибрано "Події" */}
                 <Link to="/site/contacts">Контакти</Link>

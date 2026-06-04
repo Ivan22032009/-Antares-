@@ -83,12 +83,23 @@ nav.main-nav {
 }
 
 .logo {
+        height: 36px;
+        width: auto;
+        object-fit: contain;
+        margin: 0;
+        z-index: 10; /* щоб переконатись, що лого знаходиться поверх інших елементів */
+        pointer-events: auto;
+        display: block;
+        max-height: 36px;
+}
+
+/* Ensure logo has the same size across different header variants */
+nav.main-nav .logo,
+.simple-header .logo,
+.nav-center .logo {
     height: 36px;
+    max-height: 36px;
     width: auto;
-    object-fit: contain;
-    margin: 0;
-      z-index: 10; /* щоб переконатись, що лого знаходиться поверх інших елементів */
-  pointer-events: auto;
 }
 
 .logo-subtitle {
@@ -735,6 +746,12 @@ nav.main-nav {
     line-height: 72px;
     transition: opacity 0.3s ease;
     white-space: nowrap; /* Забороняємо перенос тексту */
+}
+
+/* Stronger contrast on light backgrounds: set nav text color and outline */
+nav.main-nav .nav-left a,
+nav.main-nav .nav-right a {
+    color: #2b2b2b; /* dark gray, close to black */
 }
 
 .nav-left a:hover, .nav-right a:hover {

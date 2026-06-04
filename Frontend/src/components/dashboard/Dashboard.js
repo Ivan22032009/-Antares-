@@ -67,29 +67,64 @@ const Dashboard = () => {
           Керування контентом
         </h2>
         <div className="cards-grid">
-          {contentManagementCards.map((card) => (
+          {contentManagementCards.map((card, idx) => (
             <Link
               key={card.path}
               to={card.path}
-              className="content-management-card"
+              className={`content-management-card variant-${idx}`}
               style={{ borderColor: card.color }}
             >
-              <div className="card-header">
-                <span className="card-icon">{card.icon}</span>
-                <h3 className="card-title">{card.name}</h3>
-              </div>
-              <p className="card-description">
-                {card.description}
-              </p>
-              <div 
-                className="card-badge custom-badge"
-                style={{ 
-                  backgroundColor: card.badgeColor,
-                  color: card.textColor
-                }}
-              >
-                {card.badge}
-              </div>
+              {/* Variant 0: Large media-style card with CTA */}
+              {idx === 0 && (
+                <div className="card-media">
+                  <div className="media-left" style={{ background: `linear-gradient(135deg, ${card.color}, #ffffff22)` }}>
+                    <div className="media-icon">{card.icon}</div>
+                  </div>
+                  <div className="media-body">
+                    <h3 className="card-title">{card.name}</h3>
+                    <p className="card-description">{card.description}</p>
+                    <div className="card-actions">
+                      <span className="action-btn primary">{card.badge}</span>
+                      <span className="action-btn muted">Переглянути список</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Variant 1: Gallery-style tile with framed icon */}
+              {idx === 1 && (
+                <div className="card-gallery">
+                  <div className="gallery-frame">
+                    <div className="gallery-icon">{card.icon}</div>
+                  </div>
+                  <div className="gallery-body">
+                    <h3 className="card-title">{card.name}</h3>
+                    <p className="card-description">{card.description}</p>
+                    <div className="card-actions">
+                      <span className="action-btn photo">{card.badge}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Variant 2: Minimal document card with bullets */}
+              {idx === 2 && (
+                <div className="card-docs">
+                  <div className="doc-head">
+                    <h3 className="card-title">{card.name}</h3>
+                    <span className="card-icon small">{card.icon}</span>
+                  </div>
+                  <p className="card-description">{card.description}</p>
+                  <ul className="doc-list">
+                    <li>📄 Статут та політики</li>
+                    <li>📊 Звіти за рік</li>
+                    <li>🔒 Архів документів</li>
+                  </ul>
+                  <div className="card-actions">
+                    <span className="action-btn docs">{card.badge}</span>
+                  </div>
+                </div>
+              )}
             </Link>
           ))}
         </div>

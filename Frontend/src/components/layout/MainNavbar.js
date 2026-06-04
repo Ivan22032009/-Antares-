@@ -15,7 +15,6 @@ const MainNavbar = () => {
         </div>
         <Link to="/site/about">Про нас</Link>
         <Link to="/site/gallery">Фото/Відео</Link>
-        <Link to="/site/news">Новини</Link>
       </div>
 
       <div className="nav-center">
@@ -25,6 +24,7 @@ const MainNavbar = () => {
       </div>
 
       <div className="nav-right">
+        <Link to="/site/news">Новини</Link>
         <Link to="/site/transparency">Прозорість</Link>
         <Link to="/site/events">Події</Link>
         <Link to="/site/contacts">Контакти</Link>

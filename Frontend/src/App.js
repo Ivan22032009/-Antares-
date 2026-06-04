@@ -11,6 +11,7 @@ import GalleryManagement from './components/admin/GalleryManagement';
 import TransparencyManagement from './components/admin/TransparencyManagement'; // Додано
 import { authService } from './services/authService';
 import './App.css';
+import './components/admin/admin.css';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -66,50 +67,54 @@ const AdminLayout = () => {
 
   return (
     <div>
-      <header style={{
-        backgroundColor: '#20324cff',
-        color: 'white',
-        padding: '1rem 2rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        <h1 style={{ margin: 0, fontSize: '1.5rem', color: 'white' }}>Адмін-панель школи</h1>
-        <div>
-          <button
-            onClick={handleLogout}
-            style={{
-              backgroundColor: '#ef4444',
-              color: 'white',
-              border: 'none',
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            Вийти
-          </button>
+      <header style={{ background: '#0f172a', padding: '0.6rem 1rem', color: '#fff' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1 style={{ margin: 0, fontSize: '1.2rem', color: '#ffd54a' }}>Антарес — Адмін-панель</h1>
+          <div>
+            <button className="logout-btn" onClick={handleLogout}>Вийти</button>
+          </div>
         </div>
       </header>
-      
-      <Routes>
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="editor/:pageName" element={<Editor />} />
-        <Route path="visual-editor/:pageName" element={<VisualEditor />} />
-        
-        {/* Маршрути для управління новинами */}
-        <Route path="news" element={<NewsManagement />} />
-        <Route path="news/create" element={<NewsEditor />} />
-        <Route path="news/edit/:id" element={<NewsEditor />} />
-        
-        {/* Маршрут для управління галереєю */}
-        <Route path="gallery-management" element={<GalleryManagement />} />
-        
-        {/* Маршрут для управління прозорістю */}
-        <Route path="transparency" element={<TransparencyManagement />} />
-        
-        <Route path="" element={<Navigate to="dashboard" replace />} />
-      </Routes>
+
+      <div className="admin-root">
+        <aside className="admin-sidebar">
+          <div className="admin-brand">ANTARES</div>
+          <nav className="admin-nav">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/news">Новини</a>
+            <a href="/admin/gallery-management">Галерея</a>
+            <a href="/admin/transparency">Прозорість</a>
+            <a href="/site/home" target="_blank" rel="noreferrer">Перегляд сайту</a>
+          </nav>
+        </aside>
+
+        <main className="admin-main">
+          <div className="admin-topbar">
+            <h2 style={{ margin: 0, color: '#243447' }}>Керування контентом</h2>
+          </div>
+
+          <div style={{ maxWidth: 1200 }}>
+            <Routes>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="editor/:pageName" element={<Editor />} />
+              <Route path="visual-editor/:pageName" element={<VisualEditor />} />
+
+              {/* Маршрути для управління новинами */}
+              <Route path="news" element={<NewsManagement />} />
+              <Route path="news/create" element={<NewsEditor />} />
+              <Route path="news/edit/:id" element={<NewsEditor />} />
+
+              {/* Маршрут для управління галереєю */}
+              <Route path="gallery-management" element={<GalleryManagement />} />
+
+              {/* Маршрут для управління прозорістю */}
+              <Route path="transparency" element={<TransparencyManagement />} />
+
+              <Route path="" element={<Navigate to="dashboard" replace />} />
+            </Routes>
+          </div>
+        </main>
+      </div>
     </div>
   );
 };
