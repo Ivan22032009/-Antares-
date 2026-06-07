@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import api from '../../services/api';
 import './TransparencySection.css';
 
 const TransparencySection = () => {
@@ -12,15 +13,11 @@ useEffect(() => {
 
 const loadTransparencySections = async () => {
   try {
-    const response = await fetch('http://localhost:5001/api/transparency');
-    const data = await response.json();
+    const response = await api.get('/transparency');
+    const data = response.data;
     console.log('✅ Transparency data:', data);
-    if (Array.isArray(data)) {
-      setSections(data);
-    } else {
-      console.warn('⚠️ Очікував масив, отримав:', data);
-      setSections([]);
-    }
+    const sectionsList = Array.isArray(data) ? data : (data?.items || data?.sections || []);
+    setSections(sectionsList);
   } catch (error) {
     console.error('❌ Помилка завантаження розділів прозорості:', error);
     setSections([]);

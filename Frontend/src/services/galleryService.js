@@ -17,40 +17,31 @@ const galleryService = {
   // Завантажити нове фото в R2
   uploadGalleryImage: async (formData) => {
     try {
-      console.log('🔧 Starting R2 upload process...');
-      
-      // 1. Завантажуємо файл в R2
-      console.log('🔧 Step 1: Uploading file to R2');
-      const uploadResponse = await api.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+      console.log('🔧 Starting backend upload process...');
+      const file = formData.get('file') || formData.get('image');
+      if (!file) throw new Error('No file provided');
+
+      const originalName = file.name || 'upload';
+      const uploadFormData = new FormData();
+      uploadFormData.append('image', file);
+      uploadFormData.append('category', formData.get('category') || 'general');
+
+      const uploadResponse = await api.post('/upload', uploadFormData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      console.log('🔧 R2 upload response:', uploadResponse.data);
-
-      if (!uploadResponse.data.success) {
-        throw new Error('R2 upload failed');
-      }
-
-      // 2. Створюємо запис в галереї
-      console.log('🔧 Step 2: Creating gallery record');
       const imageData = {
         title: formData.get('title'),
         description: formData.get('description'),
         image_url: uploadResponse.data.url,
         category: formData.get('category'),
-        filename: uploadResponse.data.filename // Зберігаємо ім'я файлу для можливого видалення
+        filename: uploadResponse.data.filename,
       };
 
-      console.log('🔧 Gallery data to send:', imageData);
-      
       const galleryResponse = await api.post('/gallery', imageData);
-      console.log('🔧 Gallery creation response:', galleryResponse.data);
-      
       return galleryResponse.data;
     } catch (error) {
-      console.error('❌ Помилка завантаження в R2:', error);
+      console.error('❌ Помилка завантаження через backend:', error);
       throw error;
     }
   },

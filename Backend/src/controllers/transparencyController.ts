@@ -1,15 +1,17 @@
 import { Request, Response } from 'express';
 import TransparencyModel from '../models/Transparency';
+import { cacheGet, cacheSet, cacheDel } from '../utils/cache';
 import { TransparencyDocument } from '../models/Transparency';
 
 export const getAllTransparency = (_req: Request, res: Response): void => {
-  TransparencyModel.getAll((err, sections) => {
+  TransparencyModel.getAll(async (err, sections) => {
     if (err) {
       console.error('Помилка завантаження transparency:', err);
       res.status(500).json({ error: 'Помилка сервера' });
       return;
     }
 
+    await cacheSet('transparency:all', sections || [], 120);
     res.json(sections || []);
   });
 };
@@ -22,20 +24,30 @@ export const getTransparencyByType = (req: Request, res: Response): void => {
     return;
   }
 
-  TransparencyModel.getByType(sectionType, (err, section) => {
-    if (err) {
-      console.error(`Помилка отримання transparency ${sectionType}:`, err);
-      res.status(500).json({ error: 'Помилка сервера' });
+  (async () => {
+    const cacheKey = `transparency:type:${sectionType}`;
+    const cached = await cacheGet(cacheKey);
+    if (cached) {
+      res.json(cached);
       return;
     }
 
-    if (!section) {
-      res.status(404).json({ error: 'Розділ не знайдено' });
-      return;
-    }
+    TransparencyModel.getByType(sectionType, async (err, section) => {
+      if (err) {
+        console.error(`Помилка отримання transparency ${sectionType}:`, err);
+        res.status(500).json({ error: 'Помилка сервера' });
+        return;
+      }
 
-    res.json(section);
-  });
+      if (!section) {
+        res.status(404).json({ error: 'Розділ не знайдено' });
+        return;
+      }
+
+      await cacheSet(cacheKey, section, 300);
+      res.json(section);
+    });
+  })();
 };
 
 export const updateTransparencyByType = (req: Request, res: Response): void => {
@@ -69,7 +81,10 @@ export const updateTransparencyByType = (req: Request, res: Response): void => {
       res.status(500).json({ error: 'Помилка сервера' });
       return;
     }
-
-    res.json({ message: 'Розділ прозорості оновлено успішно' });
+    cacheDel(`transparency:type:${sectionType}`)
+      .catch(() => {})
+      .finally(() => {
+        res.json({ message: 'Розділ прозорості оновлено успішно' });
+      });
   });
 };

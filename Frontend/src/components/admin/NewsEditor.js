@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 import { newsService } from '../../services/newsService';
 import RichTextEditor from '../editor/RichTextEditor';
 import './NewsEditor.css';
@@ -87,6 +88,28 @@ const NewsEditor = () => {
     }
   };
 
+  const handleFileSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const uploadFormData = new FormData();
+      uploadFormData.append('image', file);
+      uploadFormData.append('category', 'general');
+
+      const response = await api.post('/upload', uploadFormData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      const result = response.data;
+
+      setFormData(prev => ({ ...prev, image: result.url }));
+      alert('Файл завантажено успішно');
+    } catch (err) {
+      console.error('Помилка завантаження файлу:', err);
+      alert('Помилка завантаження файлу');
+    }
+  };
+
   return (
     <div className="news-editor">
       <div className="editor-header">
@@ -143,6 +166,11 @@ const NewsEditor = () => {
               onChange={handleInputChange}
               placeholder="https://example.com/image.jpg"
             />
+          </div>
+
+          <div className="form-group">
+            <label>Завантажити зображення</label>
+            <input type="file" accept="image/*" onChange={handleFileSelect} />
           </div>
 
           <div className="form-group">

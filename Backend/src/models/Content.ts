@@ -8,7 +8,7 @@ class ContentModel {
     callback: (err: QueryError | null, result: Content | undefined) => void
   ): void {
     console.log('DB Query: Getting content for', page_name);
-    const query = 'SELECT * FROM content WHERE page_name = ?';
+    const query = 'SELECT id, title, slug, body AS content, author_id, published, created_at, updated_at FROM content WHERE slug = ?';
     db.query(query, [page_name], (err, results: any) => {
       if (err) {
         console.error('❌ Database error in getContent:', err);
@@ -24,8 +24,8 @@ class ContentModel {
     callback: (err: QueryError | null, result: any) => void
   ): void {
     console.log('DB Query: Saving content for', page_name);
-    const query = 'INSERT INTO content (page_name, content) VALUES (?, ?)';
-    db.query(query, [page_name, content], (err, result: any) => {
+    const query = 'INSERT INTO content (title, slug, body) VALUES (?, ?, ?)';
+    db.query(query, [page_name, page_name, content], (err, result: any) => {
       if (err) {
         console.error('❌ Database error in saveContent:', err);
         return callback(err, null);
@@ -40,7 +40,7 @@ class ContentModel {
     callback: (err: QueryError | null, result: any) => void
   ): void {
     console.log('DB Query: Updating content for', page_name);
-    const query = 'UPDATE content SET content = ? WHERE page_name = ?';
+    const query = 'UPDATE content SET body = ? WHERE slug = ?';
     db.query(query, [content, page_name], (err, result: any) => {
       if (err) {
         console.error('❌ Database error in updateContent:', err);

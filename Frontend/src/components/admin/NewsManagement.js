@@ -53,14 +53,7 @@ const NewsManagement = () => {
 
   return (
     <div className="news-management">
-      <div className="management-header">
-        <div>
-          <p>Створюйте та редагуйте новини школи</p>
-        </div>
-        <Link to="/admin/news/create" className="btn-create">
-          + Додати новину
-        </Link>
-      </div>
+      
 
       <div className="news-list-admin">
         {news.length > 0 ? (

@@ -77,7 +77,7 @@ const GalleryManagement = () => {
 
       if (uploadMethod === 'r2') {
         const submitFormData = new FormData();
-        submitFormData.append('image', selectedFile);
+        submitFormData.append('file', selectedFile);
         submitFormData.append('title', formData.title);
         submitFormData.append('description', formData.description);
         submitFormData.append('category', formData.category);
@@ -143,24 +143,7 @@ const GalleryManagement = () => {
 
   return (
     <div className="gallery-management">
-      <div className="gallery-header">
-        <div className="header-top">
-          <Link to="/site/gallery" target="_blank" className="view-site-btn">
-            👁️ Перегляд на сайті
-          </Link>
-        </div>
-        <p>Додавайте фото через завантаження файлів або посилання</p>
-      </div>
-
-      <div className="add-photo-section">
-        <button 
-          onClick={() => setShowForm(true)}
-          className="add-photo-btn"
-          disabled={showForm}
-        >
-          ➕ Додати нове фото
-        </button>
-      </div>
+      
 
       {showForm && (
         <div className="photo-form-overlay">

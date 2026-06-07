@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import multer, { FileFilterCallback } from 'multer';
-import { deleteFile, listFiles, uploadFile } from '../services/r2Service';
+import { deleteFile, listFiles, uploadFile, getPresignedPutUrl } from '../services/r2Service';
+import { enqueueFileProcess } from '../utils/queue';
 
 const router = Router();
 
@@ -47,11 +48,15 @@ router.post('/', upload.single('image'), async (req: Request, res: Response) => 
 
     const fileUrl = await uploadFile(req.file.buffer, fileName, req.file.mimetype);
 
-    res.json({
+    // Enqueue background processing (thumbnailing, indexing, etc.)
+    enqueueFileProcess({ filename: fileName, originalName: req.file.originalname }).catch(() => {});
+
+    res.status(202).json({
       success: true,
       url: fileUrl,
       filename: fileName,
       originalName: req.file.originalname,
+      queued: true,
     });
   } catch (error: any) {
     console.error('❌ R2 Upload error:', error);
@@ -59,6 +64,40 @@ router.post('/', upload.single('image'), async (req: Request, res: Response) => 
       error: 'Upload failed',
       details: error.message,
     });
+  }
+});
+
+// Presign endpoint for direct-to-R2 uploads from client
+router.post('/presign', async (req: Request, res: Response) => {
+  try {
+    const { filename, contentType } = req.body as { filename?: string; contentType?: string };
+    if (!filename || !contentType) {
+      res.status(400).json({ error: 'filename and contentType required' });
+      return;
+    }
+
+    const url = await getPresignedPutUrl(filename, contentType);
+    res.json({ url, publicUrl: `${process.env.R2_PUBLIC_URL}/${filename}` });
+  } catch (err: any) {
+    console.error('Presign error', err);
+    res.status(500).json({ error: 'Presign failed', details: err.message });
+  }
+});
+
+// Client notifies backend that upload is complete so backend can enqueue processing
+router.post('/complete', async (req: Request, res: Response) => {
+  try {
+    const { filename, originalName } = req.body as { filename?: string; originalName?: string };
+    if (!filename) {
+      res.status(400).json({ error: 'filename required' });
+      return;
+    }
+
+    await enqueueFileProcess({ filename, originalName });
+    res.json({ success: true, queued: true });
+  } catch (err: any) {
+    console.error('Complete enqueue error', err);
+    res.status(500).json({ error: 'Enqueue failed', details: err.message });
   }
 });
 

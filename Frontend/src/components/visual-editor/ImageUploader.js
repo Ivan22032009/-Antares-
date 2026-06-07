@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import api from '../../services/api';
 import './ImageUploader.css';
 
 const ImageUploader = ({ onInsert, onClose }) => {
@@ -14,12 +15,10 @@ const ImageUploader = ({ onInsert, onClose }) => {
 
   const loadExistingImages = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/upload');
-      if (response.ok) {
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setUploadedImages(data);
-        }
+      const response = await api.get('/upload');
+      const data = response.data;
+      if (Array.isArray(data)) {
+        setUploadedImages(data);
       }
     } catch (error) {
       console.error('Помилка завантаження існуючих зображень:', error);
@@ -58,25 +57,18 @@ const ImageUploader = ({ onInsert, onClose }) => {
       const formData = new FormData();
       formData.append('image', selectedFile);
 
-      const response = await fetch('http://localhost:5001/api/upload', {
-        method: 'POST',
-        body: formData
+      const response = await api.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setUploadedImages(prev => [data, ...prev]);
-        setSelectedFile(null);
-        setSuccess('Зображення успішно завантажено!');
-        
-        // Очистити input файлу
-        const fileInput = document.getElementById('file-input');
-        if (fileInput) fileInput.value = '';
-        
-        setTimeout(() => setSuccess(''), 2000);
-      } else {
-        setError('Помилка завантаження зображення');
-      }
+      setUploadedImages(prev => [response.data, ...prev]);
+      setSelectedFile(null);
+      setSuccess('Зображення успішно завантажено!');
+
+      const fileInput = document.getElementById('file-input');
+      if (fileInput) fileInput.value = '';
+
+      setTimeout(() => setSuccess(''), 2000);
     } catch (error) {
       console.error('Помилка завантаження:', error);
       setError('Помилка завантаження зображення. Перевірте підключення до сервера.');

@@ -96,6 +96,28 @@ npm run dev   # or npm start
 # Frontend runs on http://localhost:3000
 ```
 
+**Docker note:** when running with `docker compose`, the frontend is served by nginx on `http://localhost:3000` and proxies `/api` and `/uploads` to the backend, so the browser uses a single origin.
+
+### Cloudflare Tunnel deployment
+
+If you want to publish the site from a home Ubuntu server without opening inbound ports on your router, use Cloudflare Tunnel:
+
+1. Create a tunnel in the Cloudflare Zero Trust dashboard.
+2. Copy the tunnel token into your server `.env` as `CLOUDFLARED_TOKEN=...`.
+3. Set `CORS_ORIGINS` to your public domain, for example `https://school.example.com`.
+4. Start the stack with Docker Compose:
+
+```bash
+docker compose up -d --build
+```
+
+5. In Cloudflare, point the public hostname to the internal frontend service URL:
+  `http://frontend:80`
+
+If your public domain changes, update the hostname in the Cloudflare dashboard and keep the internal service target as `http://frontend:80`.
+
+The browser will hit Cloudflare, Cloudflare will forward traffic into the tunnel, and the frontend nginx will proxy `/api` requests to the backend inside Docker.
+
 ### Step 4: Build for production
 
 **Backend:**

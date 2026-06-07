@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import api from '../../services/api';
 
 const EditableElement = ({ 
   elementId, 
@@ -65,14 +66,12 @@ const EditableElement = ({
                 // Простий обробник для завантаження через нашу систему
                 const formData = new FormData();
                 formData.append('image', blobInfo.blob(), blobInfo.filename());
-                
-                fetch('http://localhost:5001/api/upload', {
-                  method: 'POST',
-                  body: formData
+
+                api.post('/upload', formData, {
+                  headers: { 'Content-Type': 'multipart/form-data' },
                 })
-                .then(response => response.json())
-                .then(data => resolve(data.url))
-                .catch(() => reject('Upload failed'));
+                  .then(response => resolve(response.data.url))
+                  .catch(() => reject('Upload failed'));
               });
             }
           }}

@@ -1,5 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import authRoutes from './routes/auth';
@@ -8,20 +10,41 @@ import galleryRoutes from './routes/gallery';
 import contentRoutes from './routes/content';
 import uploadRoutes from './routes/upload';
 import transparencyRoutes from './routes/transparency';
+import { getRedisClient } from './utils/cache';
+import { metricsMiddleware, metricsHandler } from './utils/metrics';
 
 dotenv.config();
 
 const app: Express = express();
 const PORT = process.env.PORT || 5000;
+app.disable('x-powered-by');
+app.set('trust proxy', 1);
+
+const allowedOrigins = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+});
+
+const uploadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 30,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+});
+
+app.use(helmet());
 
 // CORS configuration
 app.use(
   cors({
-    origin: [
-      'http://localhost:3000',
-      'http://192.168.0.224:3000',
-      'http://localhost:3001',
-    ],
+    origin: allowedOrigins.length > 0 ? allowedOrigins : ['http://localhost:3000', 'http://localhost:3001'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -45,21 +68,27 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
+// Metrics middleware
+app.use(metricsMiddleware);
+
 // Static files
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/content', contentRoutes);
-app.use('/api/upload', uploadRoutes);
+app.use('/api/upload', uploadLimiter, uploadRoutes);
 app.use('/api/transparency', transparencyRoutes);
 
 // Health check
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
+// Prometheus metrics
+app.get('/metrics', metricsHandler);
 
 // 404 handler
 app.use((_req: Request, res: Response) => {
@@ -83,7 +112,13 @@ app.use(
 );
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  try {
+    await getRedisClient();
+    console.log('Redis connected (if available)');
+  } catch (err) {
+    // ignore
+  }
   console.log(`
 ╔════════════════════════════════════╗
 ║  🏫 -Antares- Server Started       ║

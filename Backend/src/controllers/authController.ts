@@ -2,6 +2,7 @@ import { Response } from 'express';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import UserModel from '../models/User';
+import { cacheGet, cacheSet, cacheDel } from '../utils/cache';
 import { AuthRequest, LoginRequest, RegisterRequest } from '../types';
 
 export const login = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -150,7 +151,7 @@ export const register = async (req: AuthRequest, res: Response): Promise<void> =
           }
 
           console.log('✅ User created successfully:', result);
-
+          cacheDel('users:all').catch(() => {});
           res.status(201).json({
             success: true,
             message: 'Користувача успішно зареєстровано',
@@ -197,17 +198,26 @@ export const verifyToken = (req: AuthRequest, res: Response): void => {
 
 export const getUsers = (_req: AuthRequest, res: Response): void => {
   try {
-    UserModel.getAllUsers((err, users) => {
-      if (err) {
-        console.error('❌ Error fetching users:', err);
-        res.status(500).json({ success: false, message: 'Помилка бази даних' });
+    (async () => {
+      const cacheKey = 'users:all';
+      const cached = await cacheGet(cacheKey);
+      if (cached) {
+        res.json({ success: true, users: cached });
         return;
       }
 
-      // Remove password field before returning
-      const safe = (users || []).map(u => ({ id: u.id, username: u.username, email: u.email, created_at: u.created_at }));
-      res.json({ success: true, users: safe });
-    });
+      UserModel.getAllUsers(async (err, users) => {
+        if (err) {
+          console.error('❌ Error fetching users:', err);
+          res.status(500).json({ success: false, message: 'Помилка бази даних' });
+          return;
+        }
+
+        const safe = (users || []).map(u => ({ id: u.id, username: u.username, email: u.email, created_at: u.created_at }));
+        await cacheSet(cacheKey, safe, 120);
+        res.json({ success: true, users: safe });
+      });
+    })();
   } catch (error: any) {
     console.error('❌ getUsers unexpected error:', error);
     res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });

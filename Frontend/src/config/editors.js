@@ -20,19 +20,14 @@ export const editorConfig = {
         return new Promise((resolve, reject) => {
           const formData = new FormData();
           formData.append('image', blobInfo.blob(), blobInfo.filename());
-          
-          const currentHost = window.location.hostname;
-          const uploadURL = currentHost === '192.168.0.224' 
-            ? 'http://192.168.0.224:5001/api/upload'
-            : 'http://localhost:5001/api/upload';
-          
-          fetch(uploadURL, {
+
+          fetch('/api/upload', {
             method: 'POST',
-            body: formData
+            body: formData,
           })
-          .then(response => response.json())
-          .then(data => resolve(data.url))
-          .catch(() => reject('Upload failed'));
+            .then(response => response.json())
+            .then(data => resolve(data.url))
+            .catch(() => reject('Upload failed'));
         });
       }
     }

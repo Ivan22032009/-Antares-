@@ -46,7 +46,7 @@ const AdminGallery = () => {
     setUploading(true);
     try {
       const formData = new FormData();
-      formData.append('image', selectedFile);
+      formData.append('file', selectedFile);
       formData.append('title', imageTitle);
       formData.append('description', imageDescription);
 

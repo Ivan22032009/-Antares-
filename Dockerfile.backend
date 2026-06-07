@@ -15,5 +15,10 @@ RUN npm run build
 
 EXPOSE 5002
 
-# Run DB setup then start the built server
+# Copy entrypoint script and make executable
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Run DB setup then start the built server (entrypoint will ensure deps)
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["sh", "-c", "npm run setup-db && npm run start"]

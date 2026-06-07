@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css'; // Додамо CSS файл для стилів
+import { newsService } from '../../services/newsService';
+import galleryService from '../../services/galleryService';
+import { transparencyService } from '../../services/transparencyService';
 
 const Dashboard = () => {
   // Динамічні сторінки, які можна редагувати
@@ -13,6 +16,78 @@ const Dashboard = () => {
       color: '#e74c3c' 
     }
   ];
+
+  // data states
+  const [newsItems, setNewsItems] = useState([]);
+  const [newsLoading, setNewsLoading] = useState(true);
+
+  const [galleryPreview, setGalleryPreview] = useState([]);
+  const [galleryLoading, setGalleryLoading] = useState(true);
+  const [galleryCount, setGalleryCount] = useState(0);
+  const [galleryLastUpdated, setGalleryLastUpdated] = useState('');
+
+  const [transparencyItems, setTransparencyItems] = useState([]);
+  const [transLoading, setTransLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadNews = async () => {
+      setNewsLoading(true);
+      try {
+        const resp = await newsService.getAllNews();
+        const list = resp.data || resp.data?.news || resp.data?.items || resp.data;
+        // normalize to array
+        const arr = Array.isArray(list) ? list : (resp.data?.news || []);
+        if (mounted) setNewsItems(arr.slice(0,3));
+      } catch (err) {
+        console.error('Failed load news', err);
+      } finally { if (mounted) setNewsLoading(false); }
+    };
+
+    const loadGallery = async () => {
+      setGalleryLoading(true);
+      try {
+        const resp = await galleryService.getGalleryImages();
+        const images = resp.images || resp || [];
+        const list = Array.isArray(images) ? images : (images.items || []);
+        if (mounted) {
+          setGalleryPreview(list.slice(0,4));
+          setGalleryCount(list.length || 0);
+          // compute last updated timestamp from known fields
+          const lastTs = list.reduce((acc, img) => {
+            const dateStr = img.updated_at || img.updatedAt || img.modified_at || img.modifiedAt || img.created_at || img.createdAt;
+            const t = dateStr ? new Date(dateStr).getTime() : 0;
+            return Math.max(acc, t);
+          }, 0);
+          if (lastTs > 0) setGalleryLastUpdated(new Date(lastTs).toLocaleString('uk-UA', { year: 'numeric', month: 'short', day: 'numeric' }));
+          else setGalleryLastUpdated('—');
+        }
+      } catch (err) {
+        console.error('Failed load gallery', err);
+      } finally { if (mounted) setGalleryLoading(false); }
+    };
+
+    const loadTrans = async () => {
+      setTransLoading(true);
+      try {
+        const resp = await transparencyService.getAll();
+        const raw = resp || [];
+        // normalize and compute upToDate: true if content exists or documents array non-empty
+        const items = (Array.isArray(raw) ? raw : (raw.items || [])).map((it) => {
+          const hasContent = typeof it.content === 'string' && it.content.trim().length > 0;
+          const hasDocs = Array.isArray(it.documents) && it.documents.length > 0;
+          return { ...it, upToDate: hasContent || hasDocs };
+        });
+        if (mounted) setTransparencyItems(items.slice(0,6));
+      } catch (err) {
+        console.error('Failed load transparency', err);
+      } finally { if (mounted) setTransLoading(false); }
+    };
+
+    loadNews(); loadGallery(); loadTrans();
+    return () => { mounted = false; };
+  }, []);
 
   // Картки керування контентом
   const contentManagementCards = [
@@ -50,83 +125,81 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="dashboard-header">
-        <a 
-          href="/site/home" 
-          target="_blank"
-          rel="noopener noreferrer"
-          className="preview-button"
-        >
-          👁️ Перегляд сайту
-        </a>
-      </div>
 
       {/* Секція керування контентом */}
       <div className="dashboard-section">
-        <h2 className="section-title section-title-purple">
-          Керування контентом
-        </h2>
         <div className="cards-grid">
-          {contentManagementCards.map((card, idx) => (
-            <Link
-              key={card.path}
-              to={card.path}
-              className={`content-management-card variant-${idx}`}
-              style={{ borderColor: card.color }}
-            >
-              {/* Variant 0: Large media-style card with CTA */}
-              {idx === 0 && (
-                <div className="card-media">
-                  <div className="media-left" style={{ background: `linear-gradient(135deg, ${card.color}, #ffffff22)` }}>
-                    <div className="media-icon">{card.icon}</div>
-                  </div>
-                  <div className="media-body">
-                    <h3 className="card-title">{card.name}</h3>
-                    <p className="card-description">{card.description}</p>
-                    <div className="card-actions">
-                      <span className="action-btn primary">{card.badge}</span>
-                      <span className="action-btn muted">Переглянути список</span>
+          {/* News Card */}
+          <div className="content-management-card news-card">
+            <div className="card-head">
+              <h3 className="card-title">Новини</h3>
+              <Link to="/admin/news/create" className="action-small">+ Додати</Link>
+            </div>
+            <div className="news-list">
+              {newsLoading ? (
+                <p>Завантаження...</p>
+              ) : (
+                newsItems.length ? (
+                  newsItems.map(n => (
+                    <div key={n.id} className="news-row">
+                      <div className="news-meta">
+                        <div className="news-title">{n.title}</div>
+                        <div className="news-date">{new Date(n.created_at).toLocaleDateString('uk-UA')}</div>
+                      </div>
+                      <div className="news-tag">Опубліковано</div>
                     </div>
-                  </div>
-                </div>
+                  ))
+                ) : (
+                  <p>Новин не знайдено</p>
+                )
               )}
+            </div>
+          </div>
 
-              {/* Variant 1: Gallery-style tile with framed icon */}
-              {idx === 1 && (
-                <div className="card-gallery">
-                  <div className="gallery-frame">
-                    <div className="gallery-icon">{card.icon}</div>
-                  </div>
-                  <div className="gallery-body">
-                    <h3 className="card-title">{card.name}</h3>
-                    <p className="card-description">{card.description}</p>
-                    <div className="card-actions">
-                      <span className="action-btn photo">{card.badge}</span>
+          {/* Gallery Card */}
+          <div className="content-management-card gallery-card">
+            <div className="card-head">
+              <h3 className="card-title">Галерея</h3>
+              <Link to="/admin/gallery-management" className="action-small">Управління</Link>
+            </div>
+            <div className="gallery-preview">
+              {galleryLoading ? (
+                <p>Завантаження...</p>
+              ) : (
+                <div className="preview-grid">
+                  {galleryPreview.map((img, i) => (
+                    <div key={i} className="preview-item">
+                      <img src={img.image_url || img.url} alt={img.title || 'img'} />
                     </div>
-                  </div>
+                  ))}
                 </div>
               )}
+              <div className="storage-info">82% available</div>
+              <div className="gallery-meta">{galleryCount} фото • Останнє: {galleryLastUpdated || '—'}</div>
+            </div>
+          </div>
 
-              {/* Variant 2: Minimal document card with bullets */}
-              {idx === 2 && (
-                <div className="card-docs">
-                  <div className="doc-head">
-                    <h3 className="card-title">{card.name}</h3>
-                    <span className="card-icon small">{card.icon}</span>
+          {/* Transparency Card */}
+          <div className="content-management-card transparency-card">
+            <div className="card-head">
+              <h3 className="card-title">Прозорість</h3>
+              <Link to="/admin/transparency" className="action-small">Документи</Link>
+            </div>
+            <div className="transparency-list">
+              {transLoading ? (
+                <p>Завантаження...</p>
+              ) : (
+                transparencyItems.map((t, idx) => (
+                  <div key={idx} className="trans-row">
+                    <span className={`check ${t.upToDate ? 'ok' : 'missing'}`}>
+                      {t.upToDate ? '✓' : '✖'}
+                    </span>
+                    <span className="trans-label">{t.title}</span>
                   </div>
-                  <p className="card-description">{card.description}</p>
-                  <ul className="doc-list">
-                    <li>📄 Статут та політики</li>
-                    <li>📊 Звіти за рік</li>
-                    <li>🔒 Архів документів</li>
-                  </ul>
-                  <div className="card-actions">
-                    <span className="action-btn docs">{card.badge}</span>
-                  </div>
-                </div>
+                ))
               )}
-            </Link>
-          ))}
+            </div>
+          </div>
         </div>
       </div>
 

@@ -4,6 +4,16 @@ import { QueryError } from 'mysql2';
 
 class NewsModel {
   static getAll(callback: (err: QueryError | null, results: News[] | null) => void): void {
+    // Default to first page with large limit for backward compatibility
+    this.getPaginated(1, 1000, callback);
+  }
+
+  static getPaginated(
+    page: number,
+    limit: number,
+    callback: (err: QueryError | null, results: News[] | null) => void
+  ): void {
+    const offset = Math.max(0, (page - 1) * limit);
     const query = `
       SELECT
         n.id,
@@ -19,14 +29,14 @@ class NewsModel {
       LEFT JOIN users u ON u.id = n.author_id
       WHERE n.status = 'published'
       ORDER BY n.created_at DESC
+      LIMIT ? OFFSET ?
     `;
-    console.log('Executing SQL:', query);
-    db.query(query, (err, results: any) => {
+    console.log('Executing SQL (paginated):', query, 'params:', [limit, offset]);
+    db.query(query, [limit, offset], (err, results: any) => {
       if (err) {
         console.error('SQL Error:', err);
         return callback(err, null);
       }
-      console.log('SQL Results:', results);
       callback(null, results as News[]);
     });
   }

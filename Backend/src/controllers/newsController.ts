@@ -1,16 +1,28 @@
 import { Request, Response } from 'express';
 import NewsModel from '../models/News';
+import { cacheGet, cacheSet } from '../utils/cache';
 import { NewsCreateData } from '../types';
 
-export const getAllNews = async (_req: Request, res: Response): Promise<void> => {
+export const getAllNews = async (req: Request, res: Response): Promise<void> => {
   try {
-    NewsModel.getAll((err, results) => {
+    const page = Math.max(1, Number(req.query.page) || 1);
+    const limit = Math.min(100, Number(req.query.limit) || 10);
+    const cacheKey = `news:page:${page}:limit:${limit}`;
+
+    const cached = await cacheGet(cacheKey);
+    if (cached) {
+      res.json(cached);
+      return;
+    }
+
+    NewsModel.getPaginated(page, limit, async (err, results) => {
       if (err) {
         console.error('Помилка отримання новин:', err);
         res.status(500).json({ error: 'Помилка сервера' });
         return;
       }
 
+      await cacheSet(cacheKey, results || [], 45); // cache short-lived
       res.json(results || []);
     });
   } catch (error: any) {
@@ -28,7 +40,16 @@ export const getNewsById = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    NewsModel.getById(id, (err, result) => {
+    const cacheKey = `news:id:${id}`;
+    const cached = await cacheGet(cacheKey);
+    if (cached) {
+      // Fire-and-forget increment in background
+      NewsModel.incrementViews(id, () => {});
+      res.json(cached);
+      return;
+    }
+
+    NewsModel.getById(id, async (err, result) => {
       if (err) {
         console.error('Помилка бази даних:', err);
         res.status(500).json({ error: 'Помилка сервера' });
@@ -40,10 +61,8 @@ export const getNewsById = async (req: Request, res: Response): Promise<void> =>
         return;
       }
 
-      NewsModel.incrementViews(id, () => {
-        // Views increment failure should not break response.
-      });
-
+      NewsModel.incrementViews(id, () => {});
+      await cacheSet(cacheKey, result, 60 * 5); // cache 5 minutes
       res.json(result);
     });
   } catch (error: any) {

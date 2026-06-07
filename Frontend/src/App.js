@@ -77,15 +77,6 @@ const AdminLayout = () => {
 
   return (
     <div>
-      <header style={{ background: '#0f172a', padding: '0.6rem 1rem', color: '#fff' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1 style={{ margin: 0, fontSize: '1.2rem', color: '#ffd54a' }}>Антарес — Адмін-панель</h1>
-          <div>
-            <button className="logout-btn" onClick={handleLogout}>Вийти</button>
-          </div>
-        </div>
-      </header>
-
       <div className="admin-root">
         <aside className="admin-sidebar">
           <div className="sidebar-user">
@@ -93,6 +84,7 @@ const AdminLayout = () => {
             <div className="user-info">
               <div className="user-name">{user?.username || 'Гість'}</div>
               <div className="user-email">{user?.email || ''}</div>
+              <button className="sidebar-logout" onClick={handleLogout}>Вийти</button>
             </div>
           </div>
           <div className="admin-brand">ANTARES</div>
