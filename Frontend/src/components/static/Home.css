@@ -123,6 +123,10 @@
   .slick-next {
     right: 5px !important;
   }
+
+  .slick-list {
+    padding: 0 20px;
+  }
   
   .slick-prev,
   .slick-next {
@@ -200,7 +204,8 @@
 }
 
 .slick-list {
-  margin: 0 -10px;
+  margin: 0;
+  padding: 0 60px; /* ensure first and last slides are fully visible */
 }
 
 .slick-slide > div {
@@ -208,11 +213,11 @@
 }
 
 .slick-prev {
-  left: -25px;
+  left: 15px;
 }
 
 .slick-next {
-  right: -25px;
+  right: 15px;
 }
 
 .slick-prev:before,

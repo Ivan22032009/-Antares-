@@ -34,15 +34,15 @@ const Home = () => {
 
   // Прості тестові зображення
   const testImages = [
-    { id: 1, src: "../img/gallery1.jpg", alt: "Фото 1" },
-    { id: 2, src: "../img/gallery2.jpg", alt: "Фото 2" },
-    { id: 3, src: "../img/gallery3.jpg", alt: "Фото 3" },
-    { id: 4, src: "../img/gallery4.jpg", alt: "Фото 4" },
-    { id: 5, src: "../img/gallery5.jpg", alt: "Фото 5" },
-    { id: 6, src: "../img/gallery6.jpg", alt: "Фото 6" },
-    { id: 7, src: "../img/gallery7.jpg", alt: "Фото 7" },
-    { id: 8, src: "../img/gallery8.webp", alt: "Фото 8" },
-    { id: 9, src: "../img/gallery9.webp", alt: "Фото 9" }
+    { id: 1, src: "/img/gallery1.jpg", alt: "Фото 1" },
+    { id: 2, src: "/img/gallery2.jpg", alt: "Фото 2" },
+    { id: 3, src: "/img/gallery3.jpg", alt: "Фото 3" },
+    { id: 4, src: "/img/gallery4.jpg", alt: "Фото 4" },
+    { id: 5, src: "/img/gallery1.jpg", alt: "Фото 5" },
+    { id: 6, src: "/img/gallery2.jpg", alt: "Фото 6" },
+    { id: 7, src: "/img/gallery3.jpg", alt: "Фото 7" },
+    { id: 8, src: "/img/gallery4.jpg", alt: "Фото 8" },
+    { id: 9, src: "/img/gallery1.jpg", alt: "Фото 9" },
   ];
 
   //console.log('Тестові зображення:', testImages); // Додамо лог для перевірки

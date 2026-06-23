@@ -2,20 +2,42 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+h1 {
+        font-family: "Montserrat Alternates", sans-serif;
+        position: absolute;
+        top: 28%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 64px;
+        z-index: 1;
+        color: #111827; /* dark text for contrast */
+        text-shadow: 0 2px 4px rgba(0,0,0,0.06);
+        max-width: 900px;
+        width: 48%;
+        text-align: center;
+        line-height: 1.05;
+        font-weight: 800;
 }
 
-.antares-site {
-    margin: 0;
-    background-color: #f0f8ff;
-    text-align: center;
-    font-family: "Montserrat", sans-serif;
-    overflow-x: hidden;
+@media (max-width: 1024px) {
+    h1 {
+        top: 26%;
+        font-size: 52px;
+        width: 70%;
+    }
 }
 
-/* HEADER */
-header {
-    position: relative;
-    color: white;
+@media (max-width: 576px) {
+    h1 {
+        position: relative;
+        top: auto;
+        transform: none;
+        left: auto;
+        font-size: 28px;
+        width: 90%;
+        margin: 40px auto 20px;
+    }
+}
 }
 
 .header-image {
@@ -43,10 +65,20 @@ nav.main-nav {
     align-items: center;
     justify-content: space-between;
     font-family: 'Montserrat Alternates', sans-serif;
-    background: linear-gradient(90deg, rgba(0,65,130,.35), rgba(180,186,190,.35));
-    backdrop-filter: blur(6px);
+    background: linear-gradient(90deg, rgba(0,65,130,.60), rgba(180,186,190,.60));
+    backdrop-filter: blur(10px);
     border-radius: 0 0 12px 12px;
     z-index: 1000;
+}
+
+/* Dark overlay behind nav content to increase visual contrast */
+nav.main-nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.25); /* slightly lighter */
+    border-radius: 0 0 12px 12px;
+    z-index: 0;
 }
 
 .nav-left, .nav-right {
@@ -54,10 +86,12 @@ nav.main-nav {
     display: flex;
     align-items: center;
     gap: 40px;
+    position: relative;
+    z-index: 1;
 }
 
 .nav-left a, .nav-right a {
-    color: #E9FEFF;
+    color: #DCFDFF;
     text-decoration: none;
     font-weight: 700;
     font-size: 18px;
@@ -80,6 +114,8 @@ nav.main-nav {
     justify-content: center;
     height: 72px;
     pointer-events: none;
+    position: relative;
+    z-index: 1;
 }
 
 .logo {
@@ -616,8 +652,8 @@ footer {
 /* Активні посилання в навігації */
 .nav-left a.active,
 .nav-right a.active {
-  color: #ffeb3b !important;
-  border-bottom: 2px solid #ffeb3b;
+    color: #DCFDFF !important;
+    border-bottom: 2px solid #DCFDFF;
 }
 
 /* Стилі для завантажувача зображень */
@@ -716,8 +752,8 @@ nav.main-nav {
     align-items: center;
     justify-content: space-between;
     font-family: 'Montserrat Alternates', sans-serif;
-    background: linear-gradient(90deg, rgba(0,65,130,.35), rgba(180,186,190,.35));
-    backdrop-filter: blur(6px);
+    background: linear-gradient(90deg, rgba(0,65,130,.60), rgba(180,186,190,.60));
+    backdrop-filter: blur(10px);
     border-radius: 0 0 12px 12px;
     z-index: 1000;
 }
@@ -751,7 +787,7 @@ nav.main-nav {
 /* Stronger contrast on light backgrounds: set nav text color and outline */
 nav.main-nav .nav-left a,
 nav.main-nav .nav-right a {
-    color: #2b2b2b; /* dark gray, close to black */
+    color: #DCFDFF;
 }
 
 .nav-left a:hover, .nav-right a:hover {
@@ -965,8 +1001,8 @@ h1 {
 }
 /* Стилі для простого хедера без банера */
 .simple-header {
-  background: linear-gradient(90deg, rgba(0,65,130,.85), rgba(180,186,190,.85));
-  backdrop-filter: blur(6px);
+    background: linear-gradient(90deg, rgba(0,65,130,.90), rgba(180,186,190,.90));
+    backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
   left: 0;

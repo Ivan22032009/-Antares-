@@ -50,7 +50,7 @@ services:
     volumes:
       - ./Backend:/app
       - /app/node_modules
-    command: npm run dev
+    command: sh -c "npm run setup-db && npm run dev"
 
   frontend:
     build:
